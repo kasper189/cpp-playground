@@ -39,6 +39,13 @@ void run_arrays_string() {
     std::string f("Mr John Smith    ");
     urlify(f, 13);
     std::cout << "urlify: Mr%20John%20Smith is " + f << std::endl;
+    
+    // 1.4
+    std::string g("tact coa");
+    std::cout << "is palindrome permutation: true is " + bool_as_text(is_palindrome_permutation(g)) << std::endl;
+    
+    std::string h("act coa");
+    std::cout << "is palindrome permutation: false is " + bool_as_text(is_palindrome_permutation(h)) << std::endl;
 
 }
 
@@ -47,7 +54,7 @@ bool is_unique(const std::string& iString){
     if(iString.size() == 0) return true;
     if(iString.size() > 128) return false;
     
-    std::array<bool, 128> chars = {false};
+    std::array<bool, 128> chars = {false}; //ASCII
     
     for(const char& c : iString){
         if(chars[c - 'a'] == true){
@@ -69,7 +76,7 @@ void loop_and_count(const std::string& iTarget, std::array<uint32_t, 128>& count
 bool is_permutation(const std::string& iFirst, const std::string& iSecond){
     // not case sensitive | no whitespaces
     // Alternative could be to sort the strings and compare (nlogn)
-    // Could be solved using only one counter: incremente for first and decrement for second
+    // Could be solved using only one counter: increment for first and decrement for second
     if(iFirst.size() != iSecond.size()) return false;
     
     std::array<uint32_t, 128> firstCounter = {0};
@@ -113,3 +120,35 @@ void urlify(std::string& iString, const uint32_t& realLength) {
     }
 }
 
+/*1.4*/
+bool is_palindrome_permutation(const std::string& iString){
+    //Assumption: all lower case | only spaces as non-letter char
+    
+    if(iString.empty()) return false;
+    
+    std::array<bool, 128> counters = {false};
+    uint32_t size(0);
+    
+    for(const char& c : iString){
+        if(c != ' '){
+            size++;
+            counters[c - 'a'] = !counters[c - 'a'];
+        }
+    }
+    
+    uint32_t checks(0);
+    for(int i = 0; i < counters.size(); ++i){
+        if(counters[i]) {
+            checks++;
+        }
+    }
+    
+    if(checks == 1 && size % 2 == 1) {
+        return true;
+    }
+    if(checks == 0 && size % 2 == 0) {
+        return true;
+    }
+    
+    return false;
+}
