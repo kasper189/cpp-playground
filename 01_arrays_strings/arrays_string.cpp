@@ -57,6 +57,11 @@ void run_arrays_string() {
     
     std::string l("bae");
     std::cout << "is one edit away: false is " + bool_as_text(is_one_edit_away(i, l)) << std::endl;
+    
+    std::string m("aabcccccaaa");
+    std::cout << "is one edit away: a2b1c5a3 is " + compress(m) << std::endl;
+    
+    std::cout << "is one edit away: bale is " + compress(k) << std::endl;
 
 }
 
@@ -210,4 +215,44 @@ bool is_one_edit_away(const std::string& iFirst, const std::string& iSecond) {
     return false;
 }
 
+/*1.6*/
+bool has_duplicate(const std::string& iString) {
+    std::string::const_iterator it;
+    for (it = iString.begin(); it != iString.end(); ++it){
+        if((it+1) != iString.end() && *it == *(it+1)) {
+            return true;
+        }
+    }
+    return false;
+}
 
+uint32_t count_duplicates(const std::string& iString, const uint32_t pos){
+    uint32_t duplicates(1);
+    
+    for(uint32_t i = pos; pos < iString.length(); ++i) {
+        if(i + 1 < iString.length() && iString[i] == iString[i + 1]) {
+            duplicates++;
+        } else {
+            break;
+        }
+    }
+    return duplicates;
+}
+
+std::string compress(const std::string& iString) {
+    if(iString.empty() || !has_duplicate(iString)) {
+        return iString;
+    }
+    
+    std::string compressed;
+    
+    uint32_t cnt(0);
+    
+    while(cnt < iString.length()) {
+        uint32_t duplicates = count_duplicates(iString, cnt);
+        compressed += iString.at(cnt);
+        compressed += std::to_string(duplicates);
+        cnt += duplicates;
+    }
+    return compressed;
+}
