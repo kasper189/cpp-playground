@@ -46,6 +46,17 @@ void run_arrays_string() {
     
     std::string h("act coa");
     std::cout << "is palindrome permutation: false is " + bool_as_text(is_palindrome_permutation(h)) << std::endl;
+    
+    // 1.5
+    std::string i("pale");
+    std::string j("ple");
+    std::cout << "is one edit away: true is " + bool_as_text(is_one_edit_away(i, j)) << std::endl;
+    
+    std::string k("bale");
+    std::cout << "is one edit away: true is " + bool_as_text(is_one_edit_away(i, k)) << std::endl;
+    
+    std::string l("bae");
+    std::cout << "is one edit away: false is " + bool_as_text(is_one_edit_away(i, l)) << std::endl;
 
 }
 
@@ -152,3 +163,51 @@ bool is_palindrome_permutation(const std::string& iString){
     
     return false;
 }
+
+/*1.5*/
+bool is_one_edit_replace(const std::string& iFirst, const std::string& iSecond) {
+    bool differenceFound(false);
+    
+    for(int i = 0; i < iFirst.length(); ++i) {
+        if(iFirst[i] != iSecond[i]) {
+            if(differenceFound) {
+                return false;
+            } else {
+                differenceFound = true;
+            }
+        }
+    }
+    return true;
+}
+
+bool is_one_edit_insert(const std::string& iFirst, const std::string& iSecond) {
+    uint32_t idxA(0), idxB(0);
+    
+    while(idxA < iFirst.length() && idxB < iSecond.length()) {
+        if(iFirst[idxA] != iSecond[idxB]) {
+            if(idxA != idxB) {
+                return false;
+            }
+            idxB++;
+        } else {
+            idxA++;
+            idxB++;
+        }
+    }
+    return true;
+}
+
+bool is_one_edit_away(const std::string& iFirst, const std::string& iSecond) {
+    if(iFirst.length() == iSecond.length()) {
+        return is_one_edit_replace(iFirst, iSecond);
+    }
+    if(iFirst.length() + 1 == iSecond.length()) {
+        return is_one_edit_insert(iFirst, iSecond);
+    }
+    if(iFirst.length() == iSecond.length() + 1) {
+        return is_one_edit_insert(iSecond, iFirst);
+    }
+    return false;
+}
+
+
