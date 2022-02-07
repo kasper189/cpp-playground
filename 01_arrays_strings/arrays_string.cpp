@@ -1,5 +1,6 @@
 #include <iostream>
 #include <array>
+#include <vector>
 #include <sstream>
 
 #include "arrays_string.h"
@@ -9,6 +10,16 @@ std::string bool_as_text(bool b)
     std::stringstream converter;
     converter << std::boolalpha << b;
     return converter.str();
+}
+
+void print_matrix(const std::vector< std::vector<int> >& iMatrix, const int& rows, const int& cols){
+    
+    for(int r = 0; r < rows; ++r){
+        for(int c = 0; c < cols; ++c) {
+            std::cout << iMatrix[r][c] << "-";
+        }
+        std::cout << "|";
+    }
 }
 
 void run_arrays_string() {
@@ -58,11 +69,42 @@ void run_arrays_string() {
     std::string l("bae");
     std::cout << "is one edit away: false is " + bool_as_text(is_one_edit_away(i, l)) << std::endl;
     
+    // 1.6
     std::string m("aabcccccaaa");
     std::cout << "is one edit away: a2b1c5a3 is " + compress(m) << std::endl;
     
     std::cout << "is one edit away: bale is " + compress(k) << std::endl;
-
+    
+    // 1.7
+//    char n[4][4] = {
+//        {'A', 'B', 'C', 'D'},
+//        {'E', 'F', 'G', 'H'},
+//        {'I', 'J', 'K', 'L'},
+//        {'M', 'N', 'O', 'P'}
+//    };
+//    print_matrix(n);
+//    rotate_matrix(*n[]);
+//    std::cout << "rotated matrix is: M-I-E-A|N-J-F-B|O-K-G-C|P-L-H-D is " + print_matrix(n) << std::endl;
+    
+    // 1.8
+    std::vector< std::vector<int> > o;
+    std::vector<int> p = {1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1};
+    int cnt(0);
+    o.resize(5);
+    for(int i = 0 ; i < 5 ; ++i)
+    {
+        o[i].resize(4);
+    }
+    for(int r = 0; r < 5; ++r){
+        for(int c = 0; c < 4; ++c){
+            o[r][c] = p[cnt];
+            cnt++;
+        }
+    }
+    
+    zerofy_rows_columns(o, 5, 4);
+    std::cout << "zerofied matrix is: 0-0-0-0|0-1-0-0|0-0-0-0|0-0-0-0|0-1-0-0| is ";
+    print_matrix(o, 5, 4);
 }
 
 /*1.1*/
@@ -255,4 +297,53 @@ std::string compress(const std::string& iString) {
         cnt += duplicates;
     }
     return compressed;
+}
+
+///*1.7*/
+//void rotate_matrix(char **matrix) {
+//    // Number of columns
+//    int columns(0);
+//    for(char *p = *matrix; *p; ++p) {
+//        columns++;
+//    }
+//
+//    for(int c = 0; c < columns / 2; ++columns){
+//        for(int i = c; i < columns - c - 1; ++i){
+//            int top(matrix[c][i]);
+//            matrix[c][i] = matrix[columns - 1 - c - (i - c)][c];
+//            matrix[columns - 1 - c - (i - c)][c] = matrix[columns - 1 - c][columns - 1 - c - (i - c)];
+//            matrix[columns - 1 - c][columns - 1 - c - (i - c)] = matrix[i][columns - 1 - c];
+//            matrix[i][columns - 1 - c] = top;
+//        }
+//    }
+//}
+
+/*1.8*/
+void zerofy_rows_columns(std::vector< std::vector<int> >& iMatrix, const int& rows, const int& cols) {
+    std::vector<int> row_zeros;
+    std::vector<int> col_zeros;
+    
+    //Finds rows and cols that have a zero
+    for(int r = 0; r < rows; ++r){
+        for(int c = 0; c < cols; ++c) {
+            if(iMatrix[r][c] == 0) {
+                row_zeros.push_back(r);
+                col_zeros.push_back(c);
+            }
+        }
+    }
+    
+    //Reset rows
+    for(const int& rz : row_zeros) {
+        for(int c = 0; c < cols; ++c){
+            iMatrix[rz][c] = 0;
+        }
+    }
+    
+    //Reset cols
+    for(const int& cz : col_zeros) {
+        for(int r = 0; r < rows; ++r){
+            iMatrix[r][cz] = 0;
+        }
+    }
 }
