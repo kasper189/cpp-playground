@@ -24,7 +24,7 @@ void print_matrix(const std::vector< std::vector<int> >& iMatrix, const int& row
 }
 
 void run_arrays_string() {
-    std::cout << "Hello, Arrays and Strings!\n";
+    std::cout << "Hello, Arrays and Strings!" << std::endl;
     
     // 1.1
     std::string a("abcdef");
@@ -111,6 +111,8 @@ void run_arrays_string() {
     std::string q("waterbottle");
     std::string r("erbottlewat");
     std::cout << "is is_rotation: true is " + bool_as_text(is_rotation(q, r)) << std::endl;
+    
+    std::cout << "Arrays and Strings done" << std::endl;
 }
 
 /*1.1*/
