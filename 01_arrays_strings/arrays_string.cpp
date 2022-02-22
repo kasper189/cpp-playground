@@ -20,6 +20,7 @@ void print_matrix(const std::vector< std::vector<int> >& iMatrix, const int& row
         }
         std::cout << "|";
     }
+    std::cout << std::endl;
 }
 
 void run_arrays_string() {
@@ -105,6 +106,11 @@ void run_arrays_string() {
     zerofy_rows_columns(o, 5, 4);
     std::cout << "zerofied matrix is: 0-0-0-0|0-1-0-0|0-0-0-0|0-0-0-0|0-1-0-0| is ";
     print_matrix(o, 5, 4);
+    
+    // 1.9
+    std::string q("waterbottle");
+    std::string r("erbottlewat");
+    std::cout << "is is_rotation: true is " + bool_as_text(is_rotation(q, r)) << std::endl;
 }
 
 /*1.1*/
@@ -346,4 +352,13 @@ void zerofy_rows_columns(std::vector< std::vector<int> >& iMatrix, const int& ro
             iMatrix[r][cz] = 0;
         }
     }
+}
+
+/*1.9*/
+bool is_rotation(const std::string& iFirst, const std::string& iSecond) {
+    if(iFirst.length() > 0 && iFirst.length() == iSecond.length()) {
+        std::string concat(iFirst + iFirst);
+        return (concat.find(iSecond) != std::string::npos);
+    }
+    return false;
 }
