@@ -23,6 +23,11 @@ void run_linked_lists() {
     // 2.1
     delete_dups(d);
     traverse_and_print(d);
+    
+    // 2.2
+    Node *e = find_kth_to_last(d, 2);
+    std::cout << "find_kth_to_last 1 " << e->data << std::endl;
+    
 }
 
 /*2.1*/
@@ -43,4 +48,25 @@ void delete_dups(Node* head) {
             tmp = tmp->next;
         }
     }
+}
+
+/*2.2*/
+Node* find_kth_to_last(Node* head, const int8_t k)  {
+    Node* target = head;
+    Node* tmp = head;
+    int8_t cnt(k);
+    
+    while(tmp != NULL && cnt > 0) {
+        tmp = tmp->next;
+        cnt--;
+    }
+    
+    if(cnt > 0) return NULL;
+    
+    while(tmp != NULL){
+        target = target->next;
+        tmp = tmp->next;
+    }
+    
+    return target;
 }
