@@ -3,14 +3,16 @@
 #include <set>
 
 #include "linked_lists.h"
+#include "../common/common.h"
 
 void traverse_and_print(Node* head) {
     Node* tmp = head;
     std::cout << "LinkedList: " << std::endl;
     while(tmp != NULL) {
-        std::cout << "e: " << tmp->data << " | " << std::endl;
+        std::cout << "e: " << tmp->data << " | ";
         tmp = tmp->next;
     }
+    std::cout << std::endl;
 }
 
 void run_linked_lists() {
@@ -28,6 +30,9 @@ void run_linked_lists() {
     Node *e = find_kth_to_last(d, 2);
     std::cout << "find_kth_to_last 1 " << e->data << std::endl;
     
+    // 2.3
+    std::cout << "delete node true is " << bool_as_text(delete_node(c)) << std::endl;
+    traverse_and_print(d); //5-1-4
 }
 
 /*2.1*/
@@ -69,4 +74,15 @@ Node* find_kth_to_last(Node* head, const int8_t k)  {
     }
     
     return target;
+}
+
+bool delete_node(Node* previous) {
+    if(previous == NULL || previous->next == NULL) {
+        return false;
+    }
+    Node* target = previous->next;
+    target->data = target->data;
+    target->next = target->next;
+    delete target;
+    return true;
 }

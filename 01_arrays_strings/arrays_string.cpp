@@ -4,13 +4,7 @@
 #include <sstream>
 
 #include "arrays_string.h"
-
-std::string bool_as_text(bool b)
-{
-    std::stringstream converter;
-    converter << std::boolalpha << b;
-    return converter.str();
-}
+#include "../common/common.h"
 
 void print_matrix(const std::vector< std::vector<int> >& iMatrix, const int& rows, const int& cols){
     

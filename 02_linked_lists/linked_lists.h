@@ -15,5 +15,6 @@ void run_linked_lists();
 //Exercises
 void delete_dups(Node* head);
 Node* find_kth_to_last(Node* head, const int8_t k);
+bool delete_node(Node* previous);
 
 #endif /* linked_lists_h */
