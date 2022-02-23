@@ -15,6 +15,16 @@ void traverse_and_print(Node* head) {
     std::cout << std::endl;
 }
 
+Node* return_last(Node* head) {
+    if(head == NULL) return NULL;
+    Node* tmp = head;
+    
+    while(tmp->next != NULL) {
+        tmp = tmp->next;
+    }
+    return tmp;
+}
+
 void run_linked_lists() {
     std::cout << "Hello, Linked Lists!" << std::endl;
     Node* a = new Node(4, NULL);
@@ -33,6 +43,17 @@ void run_linked_lists() {
     // 2.3
     std::cout << "delete node true is " << bool_as_text(delete_node(c)) << std::endl;
     traverse_and_print(d); //5-1-4
+    
+    std::cout << "partition" << std::endl;
+    Node* f = new Node(3, NULL);
+    Node* g = new Node(5, f);
+    Node* h = new Node(8, g);
+    Node* i = new Node(5, h);
+    Node* j = new Node(10, i);
+    Node* k = new Node(2, j);
+    Node* l = new Node(1, k);
+    Node* m = partition(l, 5);
+    traverse_and_print(m);
 }
 
 /*2.1*/
@@ -76,6 +97,7 @@ Node* find_kth_to_last(Node* head, const int8_t k)  {
     return target;
 }
 
+/*2.3*/
 bool delete_node(Node* previous) {
     if(previous == NULL || previous->next == NULL) {
         return false;
@@ -85,4 +107,61 @@ bool delete_node(Node* previous) {
     target->next = target->next;
     delete target;
     return true;
+}
+
+/*2.4*/
+Node* partition(Node* head, const int pivot) {
+    if(head == NULL) {
+        return NULL;
+    }
+    
+    Node* smallers = NULL;
+    Node* greaters = NULL;
+    Node* equals = NULL;
+    Node* visitor = head;
+    
+    while(visitor != NULL) {
+        Node* next = visitor->next;
+        visitor->next = NULL;
+        
+        if(visitor->data < pivot) {
+            if(smallers == NULL) {
+                smallers = visitor;
+            } else {
+                smallers->next = visitor;
+            }
+        } else if(visitor->data > pivot) {
+            if(greaters == NULL) {
+                greaters = visitor;
+            } else {
+                greaters->next = visitor;
+            }
+        } else {
+            if(equals == NULL) {
+                equals = visitor;
+            } else {
+                equals->next = visitor;
+            }
+        }
+        visitor = next;
+    }
+    
+    //merging
+    Node* last_smaller = return_last(smallers);
+    Node* last_equal = return_last(equals);
+
+    if(last_smaller != NULL) {
+        if(last_equal != NULL) {
+            last_smaller->next = equals;
+            last_equal->next = greaters;
+        }
+        last_equal->next = greaters;
+    } else if(last_equal != NULL) {
+        smallers = equals;
+        last_equal -> next = greaters;
+    } else {
+        smallers = greaters;
+    }
+    
+    return smallers;
 }
