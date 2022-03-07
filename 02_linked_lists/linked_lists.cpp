@@ -1,6 +1,7 @@
 #include <iostream>
 #include <sstream>
 #include <set>
+#include <stack>
 
 #include "linked_lists.h"
 #include "../common/common.h"
@@ -66,6 +67,14 @@ void run_linked_lists() {
     std::cout << "sum list is " << std::endl;
     traverse_and_print(sum_lists(ac, bc));
     
+    // 2.6
+    Node* ca = new Node(0, NULL);
+    Node* cb = new Node(1, ca);
+    Node* cc = new Node(2, cb);
+    Node* cd = new Node(1, cc);
+    Node* ce = new Node(0, cd);
+    std::cout << "palindrome true is " << bool_as_text(palindrome(ce)) << std::endl;
+    std::cout << "palindrome false is " << bool_as_text(palindrome(cd)) << std::endl;
 }
 
 /*2.1*/
@@ -212,4 +221,34 @@ Node* sum_lists(Node* first, Node* second) {
         result = node;
     }
     return result;
+}
+
+/*2.6*/
+const bool palindrome(Node* a) {
+    if(a == NULL) return false;
+    if(a != NULL && a->next == NULL) return true;
+    
+    Node* slow = a;
+    Node* fast = a;
+    
+    std::stack<int> stack;
+    while(fast != NULL && fast->next != NULL) {
+        stack.push(slow->data);
+        slow = slow->next;
+        fast = fast->next->next;
+    }
+    
+    if(fast != NULL) {
+        slow = slow->next;
+    }
+    
+    while(slow != NULL) {
+        if(stack.top() != slow->data) {
+            return false;
+        }
+        stack.pop();
+        slow = slow->next;
+    }
+    
+    return true;
 }
