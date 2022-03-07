@@ -54,6 +54,18 @@ void run_linked_lists() {
     Node* l = new Node(1, k);
     Node* m = partition(l, 5);
     traverse_and_print(m);
+    
+    // 2.5
+    Node* aa = new Node(6, NULL);
+    Node* ab = new Node(1, aa);
+    Node* ac = new Node(7, ab);
+    
+    Node* ba = new Node(2, NULL);
+    Node* bb = new Node(9, ba);
+    Node* bc = new Node(5, bb);
+    std::cout << "sum list is " << std::endl;
+    traverse_and_print(sum_lists(ac, bc));
+    
 }
 
 /*2.1*/
@@ -164,4 +176,40 @@ Node* partition(Node* head, const int pivot) {
     }
     
     return smallers;
+}
+
+/*2.5*/
+Node* sum_lists(Node* first, Node* second) {
+    //Building the result in correct order
+    if(first == NULL) {
+        return second;
+    }
+    if(second == NULL) {
+        return first;
+    }
+    
+    Node* a = first;
+    Node* b = second;
+    Node* result = NULL;
+    
+    int carry = 0;
+    while(a != NULL || b != NULL) {
+        int sum(0);
+        if(a!= NULL && b != NULL) {
+            sum = a->data + b->data + carry;
+            a = a->next;
+            b = b->next;
+        } else if(a == NULL) {
+            sum = b->data + carry;
+            b = b->next;
+        } else {
+            sum = a->data + carry;
+            a = a->next;
+        }
+        carry = sum / 10;
+        sum = sum % 10;
+        Node* node = new Node(sum, result);
+        result = node;
+    }
+    return result;
 }
