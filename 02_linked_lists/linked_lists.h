@@ -19,5 +19,6 @@ bool delete_node(Node* previous);
 Node* partition(Node* head, const int pivot);
 Node* sum_lists(Node* first, Node* second);
 const bool palindrome(Node* a);
+Node* intersection(Node* a, Node* b);
 
 #endif /* linked_lists_h */

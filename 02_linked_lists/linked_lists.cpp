@@ -2,6 +2,7 @@
 #include <sstream>
 #include <set>
 #include <stack>
+#include <stdlib.h>
 
 #include "linked_lists.h"
 #include "../common/common.h"
@@ -24,6 +25,16 @@ Node* return_last(Node* head) {
         tmp = tmp->next;
     }
     return tmp;
+}
+
+int lenght(Node* a) {
+    int size(0);
+    Node* tmp = a;
+    while(tmp != NULL) {
+        size++;
+        tmp = tmp->next;
+    }
+    return size;
 }
 
 void run_linked_lists() {
@@ -70,11 +81,19 @@ void run_linked_lists() {
     // 2.6
     Node* ca = new Node(0, NULL);
     Node* cb = new Node(1, ca);
-    Node* cc = new Node(2, cb);
+    Node* cc = new Node(99, cb);
     Node* cd = new Node(1, cc);
     Node* ce = new Node(0, cd);
     std::cout << "palindrome true is " << bool_as_text(palindrome(ce)) << std::endl;
     std::cout << "palindrome false is " << bool_as_text(palindrome(cd)) << std::endl;
+    
+    // 2.7
+    Node* da = new Node(5, cc);
+    Node* db = new Node(9, da);
+    Node* dc = new Node(1, db);
+    
+    Node* intersection_node = intersection(dc, ce);
+    std::cout << "intersection 99 is " << intersection_node->data <<  std::endl;
 }
 
 /*2.1*/
@@ -251,4 +270,40 @@ const bool palindrome(Node* a) {
     }
     
     return true;
+}
+
+/*2.7*/
+Node* intersection(Node* a, Node* b) {
+    if(a == NULL || b == NULL) return NULL;
+    
+    int size_a = lenght(a);
+    int size_b = lenght(b);
+    
+    Node* longer =  NULL;
+    Node* shorter = NULL;
+    
+    if(size_a > size_b) {
+        longer = a;
+        shorter = b;
+    } else {
+        longer = b;
+        shorter = a;
+    }
+    
+    int diff(abs(size_b - size_a));
+    
+    while(diff > 0) {
+        longer = longer ->next;
+        --diff;
+    }
+    
+    while(longer != NULL && shorter != NULL) {
+        if(longer == shorter) {
+            return longer;
+        }
+        longer = longer->next;
+        shorter = shorter->next;
+    }
+    
+    return NULL;
 }
