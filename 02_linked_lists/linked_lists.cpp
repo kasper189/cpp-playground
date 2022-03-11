@@ -94,6 +94,15 @@ void run_linked_lists() {
     
     Node* intersection_node = intersection(dc, ce);
     std::cout << "intersection 99 is " << intersection_node->data <<  std::endl;
+    
+    // 2.8
+    Node* loop_node = NULL;
+    Node* ea = new Node(99, NULL);
+    Node* eb = new Node(2, ea);
+    Node* ec = new Node(1, eb);
+    ea->next = ec; //create loop
+    std::cout << "has_loop true is " << bool_as_text(has_loop(ec, loop_node)) << std::endl;
+    std::cout << "has_loop value 1 is " << loop_node->data << std::endl;
 }
 
 /*2.1*/
@@ -306,4 +315,24 @@ Node* intersection(Node* a, Node* b) {
     }
     
     return NULL;
+}
+
+/*2.8*/
+const bool has_loop(Node* head, Node*& begin) {
+    if(head == NULL) {
+        begin = NULL;
+        return false;
+    }
+    
+    std::set<Node*> nodes;
+    Node* visitor = head;
+    while(visitor != NULL) {
+        if(nodes.find(visitor) != nodes.end()) {
+            begin = visitor;
+            return true;
+        }
+        nodes.insert(visitor);
+        visitor = visitor->next;
+    }
+    return false;
 }
