@@ -19,10 +19,18 @@ class Graph {
     Graph(std::vector<GNode> nodes) : nodes(nodes) {}
 };
 
+class BNode {
+    public:
+        int number;
+        BNode* left;
+        BNode* right;
+    BNode(int number) : number(number) {}
+};
 
 void run_trees_graphs();
 
 //Exercises
 const bool is_connected(Graph g, GNode* src, GNode* dst);
+BNode* minimal_tree(const std::vector<int> v, int l, int r);
 
 #endif /* trees_graphs_h */

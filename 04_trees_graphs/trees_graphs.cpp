@@ -11,6 +11,14 @@ void reset_visited(Graph g) {
     }
 }
 
+void in_order(BNode* node) {
+    if(node == NULL) return;
+    
+    in_order(node->left);
+    std::cout << "n: " << node->number << " | " ;
+    in_order(node->right);
+}
+
 void run_trees_graphs() {
     std::cout << "Hello, Trees & Graphs!" << std::endl;
     
@@ -35,6 +43,13 @@ void run_trees_graphs() {
     reset_visited(g);
     std::cout << "is connected false is " << bool_as_text(is_connected(g, &a, &e)) << std::endl;
 
+    // 4.2
+    std::vector<int> f = {0, 1, 2, 3, 4, 5 , 6};
+    BNode* h = minimal_tree(f, 0, 7);
+    std::cout << "minimal tree 0 | 1 | 2 | 3 | 4 | 5 | 6 is" << std::endl;
+    in_order(h);
+    std::cout << std::endl;
+    
 }
 
 /*4.1*/
@@ -58,4 +73,16 @@ const bool is_connected(Graph g, GNode* src, GNode* dst) {
     }
     
     return false;
+}
+
+/*4.2*/
+BNode* minimal_tree(const std::vector<int> v, int l, int r) {
+    if(r <= l) return NULL;
+    
+    int middle((l + r) / 2);
+    BNode* node = new BNode(v[middle]);
+    node->left = minimal_tree(v, l, middle);
+    node->right = minimal_tree(v, middle + 1, r);
+    
+    return node;
 }
