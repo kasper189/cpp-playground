@@ -19,6 +19,16 @@ void in_order(BNode* node) {
     in_order(node->right);
 }
 
+void print_depths(const std::vector<std::list<BNode*>>& depths) {
+    for(const std::list<BNode*>& l : depths){
+        for(const BNode* n : l) {
+            std::cout << n->number << "-" ;
+        }
+        std::cout << " | " ;
+    }
+    std::cout << std::endl;
+}
+
 void run_trees_graphs() {
     std::cout << "Hello, Trees & Graphs!" << std::endl;
     
@@ -49,6 +59,21 @@ void run_trees_graphs() {
     std::cout << "minimal tree 0 | 1 | 2 | 3 | 4 | 5 | 6 is" << std::endl;
     in_order(h);
     std::cout << std::endl;
+    
+    //4.3
+    BNode* aaaaa = new BNode(3, NULL, NULL);
+    BNode* aaaa = new BNode(2, aaaaa, NULL);
+    BNode* aaab = new BNode(2, NULL, NULL);
+    BNode* aaba = new BNode(2, NULL, NULL);
+    BNode* aabb = new BNode(2, NULL, NULL);
+    BNode* aaa = new BNode(1, aaaa, aaab);
+    BNode* aab = new BNode(1, aaba, aabb);
+    BNode* aa = new BNode(0, aaa, aab);
+    std::vector<std::list<BNode*>> depths;
+    list_of_depth(aa, 0, depths);
+    
+    std::cout << "list of depths 0- | 1-1- | 2-2-2-2- | 3- is ";
+    print_depths(depths);
     
 }
 
@@ -85,4 +110,18 @@ BNode* minimal_tree(const std::vector<int> v, int l, int r) {
     node->right = minimal_tree(v, middle + 1, r);
     
     return node;
+}
+
+/*4.3*/
+void list_of_depth(BNode* root, int level, std::vector<std::list<BNode*>>& depths) {
+    if(root == NULL) return;
+    if(depths.size() > level) {
+        depths.at(level).push_back(root);
+    } else {
+        std::list<BNode*> tmp;
+        tmp.push_back(root);
+        depths.push_back(tmp);
+    }
+    list_of_depth(root->left, level + 1, depths);
+    list_of_depth(root->right, level + 1, depths);
 }

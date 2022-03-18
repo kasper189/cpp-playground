@@ -2,7 +2,7 @@
 #define trees_graphs_h
 
 #include <vector>
-
+#include <list>
 
 class GNode {
     public:
@@ -25,6 +25,7 @@ class BNode {
         BNode* left;
         BNode* right;
     BNode(int number) : number(number) {}
+    BNode(int number, BNode* l, BNode* r) : number(number), left(l), right(r) {}
 };
 
 void run_trees_graphs();
@@ -32,5 +33,6 @@ void run_trees_graphs();
 //Exercises
 const bool is_connected(Graph g, GNode* src, GNode* dst);
 BNode* minimal_tree(const std::vector<int> v, int l, int r);
+void list_of_depth(BNode* root, int level, std::vector<std::list<BNode*>>& depths);
 
 #endif /* trees_graphs_h */
