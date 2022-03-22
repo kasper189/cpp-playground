@@ -60,7 +60,7 @@ void run_trees_graphs() {
     in_order(h);
     std::cout << std::endl;
     
-    //4.3
+    // 4.3
     BNode* aaaaa = new BNode(3, NULL, NULL);
     BNode* aaaa = new BNode(2, aaaaa, NULL);
     BNode* aaab = new BNode(2, NULL, NULL);
@@ -75,6 +75,9 @@ void run_trees_graphs() {
     std::cout << "list of depths 0- | 1-1- | 2-2-2-2- | 3- is ";
     print_depths(depths);
     
+    // 4.4
+    int height(0);
+    std::cout << "is balanced true is " << bool_as_text(is_balanced(aa, &height)) << std::endl;
 }
 
 /*4.1*/
@@ -124,4 +127,30 @@ void list_of_depth(BNode* root, int level, std::vector<std::list<BNode*>>& depth
     }
     list_of_depth(root->left, level + 1, depths);
     list_of_depth(root->right, level + 1, depths);
+}
+
+/*4.4*/
+const bool is_balanced(const BNode* root, int* height) {
+    int leftHeight(0);
+    int rightHeight(0);
+    
+    bool left(true), right(true);
+    
+    if(root == NULL) {
+        *height = 0;
+        return true;
+    }
+    
+    left = is_balanced(root->left, &leftHeight);
+    right = is_balanced(root->right, &rightHeight);
+    
+    if(leftHeight > rightHeight) {
+        *height = leftHeight + 1;
+    } else {
+        *height = rightHeight + 1;
+    }
+    
+    if(abs(leftHeight - rightHeight) > 1) return false;
+    
+    return left && right;
 }
