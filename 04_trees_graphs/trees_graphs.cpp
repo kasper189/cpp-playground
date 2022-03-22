@@ -78,6 +78,19 @@ void run_trees_graphs() {
     // 4.4
     int height(0);
     std::cout << "is balanced true is " << bool_as_text(is_balanced(aa, &height)) << std::endl;
+    
+    // 4.5
+    std::cout << "is bst false is " << bool_as_text(is_bst(aa, INT_MIN, INT_MAX)) << std::endl;
+    BNode* baaaa = new BNode(0, NULL, NULL);
+    BNode* baaa = new BNode(1, baaaa, NULL);
+    BNode* baab = new BNode(4, NULL, NULL);
+    BNode* baba = new BNode(7, NULL, NULL);
+    BNode* babb = new BNode(9, NULL, NULL);
+    BNode* baa = new BNode(3, baaa, baab);
+    BNode* bab = new BNode(8, baba, babb);
+    BNode* ba = new BNode(5, baa, bab);
+    std::cout << "is bst true is " << bool_as_text(is_bst(ba, INT_MIN, INT_MAX)) << std::endl;
+
 }
 
 /*4.1*/
@@ -153,4 +166,11 @@ const bool is_balanced(const BNode* root, int* height) {
     if(abs(leftHeight - rightHeight) > 1) return false;
     
     return left && right;
+}
+
+/*4.5*/
+const bool is_bst(const BNode* root, int min, int max) {
+    if(root == NULL) return true;
+    
+    return root->number >= min && root->number < max && is_bst(root->left, min, root->number) && is_bst(root->right, root->number, max);
 }

@@ -35,5 +35,6 @@ const bool is_connected(Graph g, GNode* src, GNode* dst);
 BNode* minimal_tree(const std::vector<int> v, int l, int r);
 void list_of_depth(BNode* root, int level, std::vector<std::list<BNode*>>& depths);
 const bool is_balanced(const BNode* root, int* height);
+const bool is_bst(const BNode* root, int min, int max);
 
 #endif /* trees_graphs_h */
