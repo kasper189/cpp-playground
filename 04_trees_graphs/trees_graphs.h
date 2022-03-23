@@ -24,6 +24,7 @@ class BNode {
         int number;
         BNode* left;
         BNode* right;
+        BNode* parent;
     BNode(int number) : number(number) {}
     BNode(int number, BNode* l, BNode* r) : number(number), left(l), right(r) {}
 };
@@ -36,5 +37,6 @@ BNode* minimal_tree(const std::vector<int> v, int l, int r);
 void list_of_depth(BNode* root, int level, std::vector<std::list<BNode*>>& depths);
 const bool is_balanced(const BNode* root, int* height);
 const bool is_bst(const BNode* root, int min, int max);
+const BNode* successor(const BNode* node);
 
 #endif /* trees_graphs_h */

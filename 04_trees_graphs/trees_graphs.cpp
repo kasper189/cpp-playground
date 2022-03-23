@@ -91,6 +91,8 @@ void run_trees_graphs() {
     BNode* ba = new BNode(5, baa, bab);
     std::cout << "is bst true is " << bool_as_text(is_bst(ba, INT_MIN, INT_MAX)) << std::endl;
 
+    //4.6
+    std::cout << "successor 7 is " << successor(ba)->number << std::endl;
 }
 
 /*4.1*/
@@ -173,4 +175,32 @@ const bool is_bst(const BNode* root, int min, int max) {
     if(root == NULL) return true;
     
     return root->number >= min && root->number < max && is_bst(root->left, min, root->number) && is_bst(root->right, root->number, max);
+}
+
+/*4.6*/
+
+const BNode* pick_leftmost(const BNode* node) {
+    if(node == NULL) return NULL;
+    
+    if(node->left != NULL) {
+        return pick_leftmost(node->left);
+    }
+    return node;
+}
+
+const BNode* successor(const BNode* node) {
+    if(node == NULL) return NULL;
+    
+    if(node->right != NULL) {
+        return pick_leftmost(node->right);
+    } else {
+        const BNode* tmp = node;
+        const BNode* parent = tmp->parent;
+        while(parent != NULL && parent->left != tmp) {
+            tmp = parent;
+            parent = tmp->parent;
+        }
+        return parent;
+    }
+    return NULL;
 }
