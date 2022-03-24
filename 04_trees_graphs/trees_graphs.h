@@ -15,8 +15,8 @@ class GNode {
 
 class Graph {
     public:
-        std::vector<GNode> nodes;
-    Graph(std::vector<GNode> nodes) : nodes(nodes) {}
+        std::vector<GNode*> nodes;
+    Graph(std::vector<GNode*> nodes) : nodes(nodes) {}
 };
 
 class BNode {
@@ -38,5 +38,7 @@ void list_of_depth(BNode* root, int level, std::vector<std::list<BNode*>>& depth
 const bool is_balanced(const BNode* root, int* height);
 const bool is_bst(const BNode* root, int min, int max);
 const BNode* successor(const BNode* node);
+void build_oder(Graph* g, std::vector<std::string>& order);
+const BNode* first_common_ancestor(const BNode* root, const BNode* p, const BNode* q);
 
 #endif /* trees_graphs_h */

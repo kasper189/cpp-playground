@@ -6,8 +6,8 @@
 #include "../common/common.h"
 
 void reset_visited(Graph g) {
-    for(GNode n : g.nodes) {
-        n.is_visited = false;
+    for(GNode* n : g.nodes) {
+        n->is_visited = false;
     }
 }
 
@@ -42,12 +42,12 @@ void run_trees_graphs() {
     a.nodes.push_back(&c);
     b.nodes.push_back(&c);
     c.nodes.push_back(&d);
-    std::vector<GNode> n;
-    n.push_back(a);
-    n.push_back(b);
-    n.push_back(c);
-    n.push_back(d);
-    n.push_back(e);
+    std::vector<GNode*> n;
+    n.push_back(&a);
+    n.push_back(&b);
+    n.push_back(&c);
+    n.push_back(&d);
+    n.push_back(&e);
     Graph g = Graph(n);
     std::cout << "is connected true is " << bool_as_text(is_connected(g, &a, &a)) << std::endl;
     reset_visited(g);
@@ -93,6 +93,32 @@ void run_trees_graphs() {
 
     //4.6
     std::cout << "successor 7 is " << successor(ba)->number << std::endl;
+    
+    //4.7
+    GNode ga = GNode("a");
+    GNode gb = GNode("b");
+    GNode gc = GNode("c");
+    GNode gd = GNode("d");
+    GNode ge = GNode("e");
+    GNode gf = GNode("f");
+    ga.nodes.push_back(&gd);
+    gf.nodes.push_back(&gb);
+    gb.nodes.push_back(&gd);
+    gf.nodes.push_back(&ga);
+    gd.nodes.push_back(&gc);
+    std::vector<GNode*> nodes = { &ga, &gb, &gc, &gd, &ge, &gf };
+    Graph gg = Graph(nodes);
+    std::vector<std::string> order;
+    build_oder(&gg, order);
+    std::cout << "order f,e,a,b,d,c is ";
+    for(const std::string& s : order) {
+        std::cout << s << ",";
+    }
+    std::cout << std::endl;
+    
+    //4.8
+    std::cout << "first_common_ancestor 5 is " << first_common_ancestor(ba, baaaa, babb)->number << std::endl;
+    
 }
 
 /*4.1*/
@@ -178,7 +204,6 @@ const bool is_bst(const BNode* root, int min, int max) {
 }
 
 /*4.6*/
-
 const BNode* pick_leftmost(const BNode* node) {
     if(node == NULL) return NULL;
     
@@ -204,3 +229,55 @@ const BNode* successor(const BNode* node) {
     }
     return NULL;
 }
+
+/*4.7*/
+void dfs(GNode* src, std::vector<std::string>& order) {
+    src->is_visited = true;
+    for (GNode* n : src->nodes) {
+        if(!n->is_visited) {
+            dfs(n, order);
+        }
+    }
+    order.push_back(src->name);
+}
+
+void build_oder(Graph* g, std::vector<std::string>& order) {
+    for (GNode* n : g->nodes) {
+        if(!n->is_visited) {
+            dfs(n, order);
+        }
+    }
+    std::reverse(order.begin(), order.end());
+}
+
+/*4.8*/
+const bool contains(const BNode* root, const BNode* n) {
+    if(root == NULL || n == NULL) {
+        return false;
+    }
+    if(root == n) {
+        return true;
+    }
+    
+    return contains(root->left, n) || contains(root->right, n);
+}
+
+const BNode* first_common_ancestor(const BNode* root, const BNode* p, const BNode* q){
+    if(root == NULL || root == p || root == q) {
+        return root;
+    }
+    
+    bool pLeft = contains(root->left, p);
+    bool qLeft = contains(root->left, q);
+    if(pLeft != qLeft) {
+        // Nodes on different branches
+        return root;
+    }
+    
+    if(pLeft) {
+        return first_common_ancestor(root->left, p, q);
+    }
+    return first_common_ancestor(root->right, p, q);
+}
+
+
