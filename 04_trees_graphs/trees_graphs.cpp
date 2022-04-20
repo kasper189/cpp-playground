@@ -1,7 +1,6 @@
 #include <iostream>
 #include <queue>
 #include <stdio.h>
-
 #include "trees_graphs.h"
 #include "../common/common.h"
 
@@ -23,6 +22,16 @@ void print_depths(const std::vector<std::list<BNode*>>& depths) {
     for(const std::list<BNode*>& l : depths){
         for(const BNode* n : l) {
             std::cout << n->number << "-" ;
+        }
+        std::cout << " | " ;
+    }
+    std::cout << std::endl;
+}
+
+void print_sequences(const std::vector<std::list<int>> sequences) {
+    for(const std::list<int>& l : sequences){
+        for(const int n : l) {
+            std::cout << n << "-" ;
         }
         std::cout << " | " ;
     }
@@ -118,6 +127,15 @@ void run_trees_graphs() {
     
     //4.8
     std::cout << "first_common_ancestor 5 is " << first_common_ancestor(ba, baaaa, babb)->number << std::endl;
+    
+    //4.9
+    BNode ha = BNode(20, NULL, NULL);
+    BNode hb = BNode(60, NULL, NULL);
+    BNode hc = BNode(50, &ha, &hb);
+    
+    std::vector<std::list<int>> bst_sequence = bst_sequences(&hc);
+    std::cout << "bst_sequence 50-20-60- | 50-60-20- | is ";
+    print_sequences(bst_sequence);
     
 }
 
@@ -280,4 +298,51 @@ const BNode* first_common_ancestor(const BNode* root, const BNode* p, const BNod
     return first_common_ancestor(root->right, p, q);
 }
 
+/*4.9*/
+void weave(std::list<int> a, std::list<int> b, std::list<int> prefix, std::vector<std::list<int>>& r) {
+    if(a.size() == 0 || b.size() == 0) {
+        std::list<int> result(prefix);
+        result.insert(result.end(), a.begin(), a.end());
+        result.insert(result.end(), b.begin(), b.end());
+        r.push_back(result);
+        return;
+    }
+    
+    int head = a.front();
+    a.pop_front();
+    prefix.push_back(head);
+    weave(a, b, prefix, r);
+    prefix.pop_back();
+    a.push_front(head);
+    
+    head = b.front();
+    b.pop_front();
+    prefix.push_back(head);
+    weave(a, b, prefix, r);
+    prefix.pop_back();
+    b.push_front(head);
+}
 
+std::vector<std::list<int>> bst_sequences(const BNode* root) {
+    std::vector<std::list<int>> result = std::vector<std::list<int>>();
+    
+    if(root == NULL) {
+        result.push_back(std::list<int>());
+        return result;
+    }
+    
+    std::list<int> prefix = std::list<int>();
+    prefix.push_back(root->number);
+    
+    std::vector<std::list<int>> left = bst_sequences(root->left);
+    std::vector<std::list<int>> right = bst_sequences(root->right);
+    
+    for(std::list<int> l : left) {
+        for(std::list<int> r : right) {
+            std::vector<std::list<int>> w = std::vector<std::list<int>>();
+            weave(l, r, prefix, w);
+            result.insert(result.end(), w.begin(), w.end());
+        }
+    }
+    return result;
+}
