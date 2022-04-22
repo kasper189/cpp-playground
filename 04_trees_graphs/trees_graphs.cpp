@@ -141,6 +141,21 @@ void run_trees_graphs() {
     std::cout << "check_subtree true is " << bool_as_text(check_subtree(&hc, &hb)) << std::endl;
     std::cout << "check_subtree true is " << bool_as_text(check_subtree(&hc, &hc)) << std::endl;
     std::cout << "check_subtree false is " << bool_as_text(check_subtree(&hb, &hc)) << std::endl;
+    
+    //4.12
+    BNode i30 = BNode(3, NULL, NULL);
+    BNode i31 = BNode(-2, NULL, NULL);
+    BNode i32 = BNode(1, NULL, NULL);
+    
+    BNode i20 = BNode(3, &i30, &i31);
+    BNode i21 = BNode(2, NULL, &i32);
+    BNode i22 = BNode(11, NULL, NULL);
+    
+    BNode i10 = BNode(5, &i20, &i21);
+    BNode i11 = BNode(-3, NULL, &i22);
+    
+    BNode i00 = BNode(10, &i10, &i11);
+    std::cout << "path_with_sum 2 is " << path_with_sum(&i00, 8) << std::endl;
 }
 
 /*4.1*/
@@ -380,4 +395,30 @@ const bool check_subtree(const BNode* a, const BNode* b) {
         return check_subtree(a->right, b);
     }
     return false;
+}
+
+/*4.12*/
+const int build_sum(const BNode* root, const int& target, int& sum) {
+    if(root == NULL) {
+        return 0;
+    }
+    sum += root->number;
+    int paths(0);
+    
+    if(sum == target) {
+        ++paths;
+    }
+    
+    return paths + build_sum(root->left, target, sum) + build_sum(root->right, target, sum);
+}
+
+const int path_with_sum(const BNode* root, const int& target) {
+    if(root == NULL) {
+        return 0;
+    }
+    
+    int s(0);
+    int sum_with_root = build_sum(root, target, s);
+    
+    return sum_with_root + path_with_sum(root->left, target) + path_with_sum(root->right, target);
 }
