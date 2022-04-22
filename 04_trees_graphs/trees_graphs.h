@@ -41,5 +41,6 @@ const BNode* successor(const BNode* node);
 void build_oder(Graph* g, std::vector<std::string>& order);
 const BNode* first_common_ancestor(const BNode* root, const BNode* p, const BNode* q);
 std::vector<std::list<int>> bst_sequences(const BNode* root);
+const bool check_subtree(const BNode* a, const BNode* b);
 
 #endif /* trees_graphs_h */

@@ -137,6 +137,10 @@ void run_trees_graphs() {
     std::cout << "bst_sequence 50-20-60- | 50-60-20- | is ";
     print_sequences(bst_sequence);
     
+    //4.10
+    std::cout << "check_subtree true is " << bool_as_text(check_subtree(&hc, &hb)) << std::endl;
+    std::cout << "check_subtree true is " << bool_as_text(check_subtree(&hc, &hc)) << std::endl;
+    std::cout << "check_subtree false is " << bool_as_text(check_subtree(&hb, &hc)) << std::endl;
 }
 
 /*4.1*/
@@ -345,4 +349,35 @@ std::vector<std::list<int>> bst_sequences(const BNode* root) {
         }
     }
     return result;
+}
+
+/*4.10*/
+const bool match_trees(const BNode* a, const BNode* b) {
+    if(a == NULL && b == NULL) {
+        return true;
+    }
+    if(a == NULL || b == NULL) {
+        return false;
+    }
+    
+    return (a->number == b->number && match_trees(a->left, b->left) && match_trees(a->right, b->right));
+}
+
+const bool check_subtree(const BNode* a, const BNode* b) {
+    if(a == NULL && b == NULL) {
+        return true;
+    }
+    if(a == NULL || b == NULL) {
+        return false;
+    }
+    if(a->number == b->number) {
+        return match_trees(a, b);
+    }
+    if(a->number > b->number) {
+        return check_subtree(a->left, b);
+    }
+    else {
+        return check_subtree(a->right, b);
+    }
+    return false;
 }
